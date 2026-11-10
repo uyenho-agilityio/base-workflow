@@ -73,7 +73,7 @@ Keep the config file in the repo. Do not put secrets in it.
 ### Run one ticket
 
 ```
-/workflow:do-task docs/tickets/11-profile-link.md
+/workflow:do-task 11
 ```
 
 The run goes like this:
@@ -92,7 +92,7 @@ You can stop at any gate. Run `/workflow:do-task` again on the same ticket to re
 ### Check where a ticket stands
 
 ```
-/workflow:task-status docs/tickets/11-profile-link.md
+/workflow:task-status 11
 ```
 
 Reads the `## Log`, reports the last step and the next one. Changes nothing.
