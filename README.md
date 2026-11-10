@@ -136,11 +136,28 @@ Lists ticket files that have no issue yet, shows the list, and creates the issue
 
 ## Status
 
-Version `0.1.0`. This is a first draft, not yet proven.
+Version `0.1.0`, **in progress**. The plugin is written but not tested end to end. Do not treat it as finished until the test round below passes.
 
-- The skills and adapters are written. They have not been run end to end on a real ticket.
-- The guard hook (`scripts/guard.mjs`, wired in `hooks/hooks.json`) blocks pushes to protected branches, force pushes, `--no-verify`, staging secret files, `rm -rf` on root or home, and piping downloads into a shell. It has 13 unit tests in `tests/guard.test.mjs`. It is not yet run inside a real session.
-- Without `.claude/workflow.config.json`, the guard allows everything. With a config that is invalid, it blocks every Bash call until the config is fixed.
-- The config reader (`config.mjs`, shared validation for all scripts) and the golden checks script are not written yet.
-- The Trello adapter has not been checked against a live board. Confirm the connector's tool names before the first run.
-- The example config targets nutrition-coach. A second project config (coffee shop) is not written yet.
+**Written**
+
+- Skills: `do-task` with its eight step files, `do-tdd`, `check-release`, `task-status`, `publish-tickets`
+- Agents: `plan-reviewer`, `spec-checker`, `pr-writer`, `tracker-manager`
+- Tracker adapters: `github-issues`, `trello`, `none`
+- Guard hook: `scripts/guard.mjs`, wired in `hooks/hooks.json`. Its 13 unit tests pass when run directly
+- Config schema and an example config for nutrition-coach
+
+**Not tested yet**
+
+- Install from the marketplace in a real Claude Code session
+- `/workflow:task-status 11` on nutrition-coach
+- The guard hook inside a real session. Only direct script runs have passed so far
+- A full `/workflow:do-task` run on a test ticket, through all three gates
+- The `trello` adapter against a real board
+- Automatic install of `mattpocock-skills` as a dependency
+
+**Missing before a real run**
+
+- `config.mjs`: `do-task` says to read the config through scripts. Until this exists, Claude reads the JSON directly.
+- The golden checks script (`check-run.mjs`)
+
+**Next test round:** install the plugin, run `/workflow:task-status 11`, then run `/workflow:do-task` on a throwaway ticket. Record every failure in the PR before fixing it.
