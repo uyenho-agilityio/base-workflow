@@ -1,0 +1,11 @@
+{
+  "name": "base-workflow",
+  "owner": { "name": "Uyen Ho" },
+  "plugins": [
+    {
+      "name": "workflow",
+      "source": "./plugins/workflow",
+      "description": "Ticket-to-PR workflow with design grilling, three approval gates, tracker adapters and config-driven guardrails."
+    }
+  ]
+}

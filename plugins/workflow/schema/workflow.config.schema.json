@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "workflow.config.schema.json",
+  "title": "workflow.config.json",
+  "description": "Project settings for the workflow plugin. Lives at .claude/workflow.config.json. Steps read these keys; nothing else is hardcoded.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "remote",
+    "baseBranch",
+    "protectedBranches",
+    "branchTemplate",
+    "tracker",
+    "criteriaPattern",
+    "verify",
+    "commit"
+  ],
+  "properties": {
+    "version": {
+      "const": 1
+    },
+    "specsDir": {
+      "type": "string",
+      "description": "Where design.md, plan.md, and reports go. Should be gitignored.",
+      "default": "docs/specs"
+    },
+    "remote": {
+      "type": "string",
+      "description": "Git remote for fetch, push, and PRs. Example: origin, github."
+    },
+    "baseBranch": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Feature branches start from remote/baseBranch and PRs target it."
+    },
+    "protectedBranches": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1,
+      "description": "Branches the workflow must never push to. Include baseBranch."
+    },
+    "branchTemplate": {
+      "type": "string",
+      "description": "Branch name pattern. Placeholders: {type}, {ticket}, {slug}.",
+      "examples": ["feat/nc-{ticket}-{slug}", "{type}/{ticket}-{slug}"]
+    },
+    "worktree": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Working copy policy. Default is the main checkout.",
+      "properties": {
+        "default": { "enum": ["none", "worktree"], "default": "none" },
+        "whenParallel": { "enum": ["none", "worktree"], "default": "worktree" }
+      }
+    },
+    "tracker": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": {
+        "type": { "enum": ["github-issues", "trello", "none"] },
+        "statuses": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Name each workflow state uses in the tracker: a GitHub label, or a Trello list name. Required unless type is none.",
+          "required": ["todo", "in_progress", "review", "done"],
+          "properties": {
+            "todo": { "type": "string", "minLength": 1 },
+            "in_progress": { "type": "string", "minLength": 1 },
+            "review": { "type": "string", "minLength": 1 },
+            "done": { "type": "string", "minLength": 1 }
+          }
+        },
+        "doneBy": {
+          "enum": ["merge", "status"],
+          "description": "merge: merging the PR closes the item (GitHub Closes #n). status: the workflow sets done itself after merge (Trello list move).",
+          "default": "merge"
+        },
+        "ticketGlob": {
+          "type": ["string", "null"],
+          "description": "Ticket files to read when the tracker is a file-based one. Null when tickets come from the tracker itself."
+        },
+        "board": {
+          "type": "string",
+          "description": "Trello board URL. Used only by the trello adapter."
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "type": { "const": "none" } } },
+          "then": { "not": { "required": ["statuses"] } }
+        },
+        {
+          "if": { "properties": { "type": { "const": "trello" } } },
+          "then": { "required": ["statuses", "board"] }
+        }
+      ]
+    },
+    "criteriaPattern": {
+      "type": "string",
+      "description": "Regex that matches one acceptance criterion line in a ticket. Used by plan and spec-checker.",
+      "examples": ["^- \\[[ x]\\] "]
+    },
+    "verify": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["lint", "typecheck", "test", "build"],
+      "description": "Exact shell commands the checks step runs. The workflow never invents them.",
+      "properties": {
+        "lint": { "type": "string", "minLength": 1 },
+        "typecheck": { "type": "string", "minLength": 1 },
+        "test": { "type": "string", "minLength": 1 },
+        "build": { "type": "string", "minLength": 1 },
+        "e2e": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Optional. Run when the diff touches UI."
+        }
+      }
+    },
+    "commit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["types", "maxSummary"],
+      "properties": {
+        "types": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "pattern": "^[a-z]+$" }
+        },
+        "maxSummary": { "type": "integer", "minimum": 1, "maximum": 100 }
+      }
+    },
+    "sensitivePaths": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "default": [],
+      "description": "Globs. A diff touching any of them triggers the security review. Secret files (.env*, playwright/.auth) are protected by the guard hook, not by this list."
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "extraAgents": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "default": [],
+          "description": "Project-level reviewer agents to run in the review step, for example rls-auditor for a Supabase project."
+        }
+      }
+    },
+    "apps": {
+      "type": "object",
+      "description": "Optional. Only for monorepos. Single-app projects omit this key.",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["dir"],
+        "properties": {
+          "dir": { "type": "string", "minLength": 1 },
+          "verify": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "lint": { "type": "string", "minLength": 1 },
+              "typecheck": { "type": "string", "minLength": 1 },
+              "test": { "type": "string", "minLength": 1 },
+              "build": { "type": "string", "minLength": 1 },
+              "e2e": { "type": "string", "minLength": 1 }
+            }
+          }
+        }
+      }
+    }
+  }
+}

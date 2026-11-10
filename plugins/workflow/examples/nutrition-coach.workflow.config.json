@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "specsDir": "docs/specs",
+  "remote": "github",
+  "baseBranch": "feat/nutrition-coach",
+  "protectedBranches": ["feat/nutrition-coach", "main"],
+  "branchTemplate": "feat/nc-{ticket}-{slug}",
+  "worktree": { "default": "none", "whenParallel": "worktree" },
+  "tracker": {
+    "type": "github-issues",
+    "statuses": {
+      "todo": "status: todo",
+      "in_progress": "status: in progress",
+      "review": "status: in review",
+      "done": "status: done"
+    },
+    "doneBy": "status",
+    "ticketGlob": "docs/tickets/*.md"
+  },
+  "criteriaPattern": "^- \\[[ x]\\] ",
+  "verify": {
+    "lint": "pnpm lint",
+    "typecheck": "pnpm typecheck",
+    "test": "pnpm test",
+    "build": "pnpm build",
+    "e2e": "pnpm e2e"
+  },
+  "commit": {
+    "types": [
+      "feat",
+      "fix",
+      "docs",
+      "chore",
+      "refactor",
+      "test",
+      "style",
+      "perf",
+      "ci",
+      "build"
+    ],
+    "maxSummary": 72
+  },
+  "sensitivePaths": [
+    "src/utils/supabase/**",
+    "src/proxy.ts",
+    "src/app/auth/**",
+    "supabase/migrations/**"
+  ],
+  "review": { "extraAgents": ["rls-auditor"] }
+}
