@@ -1,0 +1,7 @@
+{
+  "name": "workflow",
+  "version": "0.1.0",
+  "description": "Take one ticket from tracker to draft PR: design grilling, plan, TDD build, review, checks, PR, merge. Project settings live in .claude/workflow.config.json.",
+  "author": { "name": "Uyen Ho" },
+  "dependencies": ["mattpocock-skills@claude-plugins-official"]
+}
