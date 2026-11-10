@@ -35,19 +35,23 @@ To support a new tracker, add `trackers/<name>/adapter.md` with the four operati
 
 ## Install
 
-From a local clone:
-
-```bash
-claude plugin marketplace add /path/to/base-workflow
-claude plugin install workflow@base-workflow
-```
+Run these inside an interactive `claude` session, in any project. They are slash commands, not shell commands.
 
 From GitHub:
 
-```bash
-claude plugin marketplace add uyenho-agilityio/base-workflow
-claude plugin install workflow@base-workflow
 ```
+/plugin marketplace add uyenho-agilityio/base-workflow
+/plugin install workflow@base-workflow
+```
+
+From a local clone:
+
+```
+/plugin marketplace add /path/to/base-workflow
+/plugin install workflow@base-workflow
+```
+
+Installing `workflow` also installs its dependency, `mattpocock-skills` from the `claude-plugins-official` marketplace. It is installed at its latest version. Check the install with `/plugin`. After it is installed, `/workflow:do-task` appears in the command list.
 
 ## Set up a project
 
@@ -120,7 +124,7 @@ Lists ticket files that have no issue yet, shows the list, and creates the issue
 | Name | Kind | Purpose |
 |---|---|---|
 | `do-task` | Skill | The full flow for one ticket |
-| `grilling` | Skill | Design interview, one round at a time (MIT, see `THIRD_PARTY_NOTICES.md`) |
+| `mattpocock-skills:grilling` | Skill, from a dependency | Design interview, one round at a time. Installed with this plugin |
 | `do-tdd` | Skill | Build one approved seam test-first |
 | `check-release` | Skill | Pre-merge report, reports only |
 | `task-status` | Skill | Read-only progress report |

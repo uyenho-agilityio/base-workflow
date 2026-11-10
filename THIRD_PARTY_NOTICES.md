@@ -1,33 +1,7 @@
 # Third-party notices
 
-## grilling skill
+This plugin does not copy any third-party code.
 
-- **File:** `plugins/workflow/skills/grilling/SKILL.md`
-- **Source:** `mattpocock-skills` (plugin version 1.3.1), skill `productivity/grilling`
-- **Copied:** verbatim, body and frontmatter unchanged
-- **Copyright:** Copyright (c) 2026 Matt Pocock
-- **License:** MIT
+## Dependencies
 
-```
-MIT License
-
-Copyright (c) 2026 Matt Pocock
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
+- **`mattpocock-skills`** (marketplace `claude-plugins-official`). Provides the `grilling` skill used by the design step. Declared in `plugins/workflow/.claude-plugin/plugin.json` and installed automatically with this plugin. Its license is held by its author; see that plugin's own license file.

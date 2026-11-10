@@ -6,7 +6,9 @@ disable-model-invocation: true
 
 # do-task
 
-Usage: `/do-task [--auto] <ticket file or issue link>`
+Usage: `/do-task [--auto] <ticket file, ticket id, or issue link>`
+
+A ticket id such as `11` or `11-profile-link` is matched against `tracker.ticketGlob` in the config. A full path also works.
 
 Run from the project root. Project values come from `.claude/workflow.config.json` (read it through the workflow scripts, never parse it by hand). If the file is missing, stop and ask the user to create it.
 
@@ -43,7 +45,7 @@ A missing worktree is not a reason to stop. Do not guess.
 ## Stages
 
 1. **Start** (`steps/start.md`): read the ticket, check "Blocked by", find the issue, set the tracker status to in progress, create the branch from `remote/baseBranch`, log `start`.
-2. **Design** (`steps/design.md`): grill the user with the `grilling` skill. Write each round to `design.md` in the specs directory. Log `design` when the user confirms the shared understanding.
+2. **Design** (`steps/design.md`): grill the user with the `mattpocock-skills:grilling` skill, which this plugin depends on. Write each round to `design.md` in the specs directory. Log `design` when the user confirms the shared understanding.
 3. **Gate 1** (`steps/plan.md`): write the plan and test seams, show design and plan together, wait for approval, log `gate1`.
 4. **Build** (`steps/build.md`): run `do-tdd` for each seam, log `slice <n>` after each seam passes.
 5. **Review** (`steps/review.md`): code review, security review, and the `spec-checker` agent. Fix real findings inside the ticket, list the rest as follow-ups. Log `review`.
