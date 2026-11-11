@@ -161,11 +161,6 @@ Version `0.1.0`, **in progress**, scoped to tracker `github-issues` and `none`. 
 - The TDD build path (`do-tdd`) with a real test seam
 - The review step: code review, security review, and `spec-checker`
 
-**Known issues**
-
-- The example config sets `tracker.doneBy` to `"status"`. Projects that close issues by merging the PR need `"merge"`.
-- A ticket log line with a non-integer step (for example `slice 5b`) makes `task-status` unclear about the next step.
-
 **Missing before a real run**
 
 - `config.mjs`: `do-task` says to read the config through scripts. Until this exists, Claude reads the JSON directly.
