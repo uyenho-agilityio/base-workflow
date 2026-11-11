@@ -136,7 +136,7 @@ Lists ticket files that have no issue yet, shows the list, and creates the issue
 
 ## Status
 
-Version `0.1.0`, **in progress**. The plugin is written but not tested end to end. Do not treat it as finished until the test round below passes.
+Version `0.1.0`, **in progress**. The flow has run end to end once on nutrition-coach, on a throwaway ticket, up to Gate 2 (PR opened). Gate 3 (merge) and the items below are not tested yet.
 
 **Written**
 
@@ -146,18 +146,30 @@ Version `0.1.0`, **in progress**. The plugin is written but not tested end to en
 - Guard hook: `scripts/guard.mjs`, wired in `hooks/hooks.json`. Its 13 unit tests pass when run directly
 - Config schema and an example config for nutrition-coach
 
+**Tested**
+
+- Install from a local path in Claude Code, with `mattpocock-skills` installed as the dependency
+- `/workflow:task-status 11` reads the ticket log and the PR state
+- `/workflow:do-task 12` on a tracker of type `none`: start, design (grilling), plan with the requirements table, Gate 1, build, checks, and Gate 2 (commit, push, PR)
+- `/workflow:check-release` on the open PR, reported without merging
+- The nutrition-coach verify commands (`lint`, `typecheck`, `test`, `build`) pass with the example config
+
 **Not tested yet**
 
-- Install from the marketplace in a real Claude Code session
-- `/workflow:task-status 11` on nutrition-coach
-- The guard hook inside a real session. Only direct script runs have passed so far
-- A full `/workflow:do-task` run on a test ticket, through all three gates
+- Gate 3: a real merge through the plugin
+- The guard hook blocking a real push inside a session. Only direct script runs have passed
+- The TDD build path (`do-tdd`) with a real test seam
+- The review step: code review, security review, and `spec-checker`
 - The `trello` adapter against a real board
-- Automatic install of `mattpocock-skills` as a dependency
+
+**Known issues**
+
+- The example config sets `tracker.doneBy` to `"status"`. Projects that close issues by merging the PR need `"merge"`.
+- A ticket log line with a non-integer step (for example `slice 5b`) makes `task-status` unclear about the next step.
 
 **Missing before a real run**
 
 - `config.mjs`: `do-task` says to read the config through scripts. Until this exists, Claude reads the JSON directly.
 - The golden checks script (`check-run.mjs`)
 
-**Next test round:** install the plugin, run `/workflow:task-status 11`, then run `/workflow:do-task` on a throwaway ticket. Record every failure in the PR before fixing it.
+**Next test round:** merge one throwaway PR through Gate 3, run the guard hook on a blocked push, run `do-tdd` on a real seam, and run the review step.

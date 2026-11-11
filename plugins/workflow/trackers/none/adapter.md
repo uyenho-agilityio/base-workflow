@@ -8,10 +8,16 @@ Every operation returns `skipped` and makes no change.
 
 | Operation | Result |
 |---|---|
-| `getTicket` | Read the ticket file at the path given, or use the pasted text. Return its title, user story, blockers, and every line matching `criteriaPattern`. This is the only operation that does work. |
+| `getTicket` | Read the ticket file at the path given, or use the pasted text. Return its id, title, user story, blockers, and every line matching `criteriaPattern`. This is the only operation that does work. |
 | `setStatus` | `skipped` |
 | `linkPR` | `skipped`. The PR body still carries the ticket reference. |
 | `comment` | `skipped` |
+
+## Ticket id
+
+- The id is the file's leading number. `12-workflow-plugin-test.md` gives id `12`. This is the id that `branchTemplate` and the `## Log` use.
+- If the file name has no leading number, the id is the file name without `.md`.
+- Pasted text has no file, so the user gives the id with it.
 
 ## Notes
 
