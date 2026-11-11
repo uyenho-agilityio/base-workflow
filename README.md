@@ -136,13 +136,13 @@ Lists ticket files that have no issue yet, shows the list, and creates the issue
 
 ## Status
 
-Version `0.1.0`, **in progress**. The flow has run end to end once on nutrition-coach, on a throwaway ticket, up to Gate 2 (PR opened). Gate 3 (merge) and the items below are not tested yet.
+Version `0.1.0`, **in progress**, scoped to tracker `github-issues` and `none`. Trello moves to v0.2. The flow has run once end to end on nutrition-coach, on a throwaway ticket, up to Gate 2 (PR opened).
 
 **Written**
 
 - Skills: `do-task` with its eight step files, `do-tdd`, `check-release`, `task-status`, `publish-tickets`
 - Agents: `plan-reviewer`, `spec-checker`, `pr-writer`, `tracker-manager`
-- Tracker adapters: `github-issues`, `trello`, `none`
+- Tracker adapters: `github-issues`, `none`. The `trello` adapter is kept in the repo for v0.2
 - Guard hook: `scripts/guard.mjs`, wired in `hooks/hooks.json`. Its 13 unit tests pass when run directly
 - Config schema and an example config for nutrition-coach
 
@@ -154,22 +154,18 @@ Version `0.1.0`, **in progress**. The flow has run end to end once on nutrition-
 - `/workflow:check-release` on the open PR, reported without merging
 - The nutrition-coach verify commands (`lint`, `typecheck`, `test`, `build`) pass with the example config
 
-**Not tested yet**
+**Not tested, accepted for v0.1**
 
 - Gate 3: a real merge through the plugin
 - The guard hook blocking a real push inside a session. Only direct script runs have passed
 - The TDD build path (`do-tdd`) with a real test seam
 - The review step: code review, security review, and `spec-checker`
-- The `trello` adapter against a real board
-
-**Known issues**
-
-- The example config sets `tracker.doneBy` to `"status"`. Projects that close issues by merging the PR need `"merge"`.
-- A ticket log line with a non-integer step (for example `slice 5b`) makes `task-status` unclear about the next step.
 
 **Missing before a real run**
 
 - `config.mjs`: `do-task` says to read the config through scripts. Until this exists, Claude reads the JSON directly.
 - The golden checks script (`check-run.mjs`)
 
-**Next test round:** merge one throwaway PR through Gate 3, run the guard hook on a blocked push, run `do-tdd` on a real seam, and run the review step.
+**Out of scope for v0.1**
+
+- Trello tracker, tested against a real board (v0.2)
