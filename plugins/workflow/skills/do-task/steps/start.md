@@ -6,7 +6,7 @@ No gate. Goal: the ticket is read, marked in progress, and a branch exists to bu
 
 1. **Read the ticket** with the tracker adapter (`tracker.type`): title, user story, acceptance checklist, "Blocked by", and the demo line if the ticket has one.
 2. **Check blockers.** If "Blocked by" names a ticket that is not merged, stop and say so.
-3. **Find the ticket id.** If the adapter reports no id (for example, a GitHub issue number), stop and ask the user to publish the tickets first.
+3. **Find the ticket id.** The adapter reports it. For GitHub Issues it is the issue number. For `none` it is the file's leading number (see the adapter). If the adapter reports no id, stop and ask the user to publish the tickets first.
 4. **Set status in progress** with the adapter's `setStatus`, using `tracker.statuses.in_progress` (or the label for GitHub Issues).
 5. **Create the branch.**
    - Name it from `branchTemplate` in the config, using the ticket id and a short slug.
